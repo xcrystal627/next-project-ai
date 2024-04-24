@@ -1,0 +1,74 @@
+/**
+ * /levels -> [Home]
+ * /daily-challenge -> [Home]
+ * /level -> [/levels]
+ * /leaderboard -> [Home]
+ * /result -> [Home]
+ * /whatsnew -> [Home]
+ * /roadmap -> [Home]
+ * /rule -> [Home]
+ * /buymecoffee -> [Home]
+ * /signup -> [Home]
+ * /recovery -> [Home]
+ * /ai -> [/levels]
+ */
+'use client';
+
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { BiHomeAlt, BiLeftArrowAlt } from 'react-icons/bi';
+import { BsFillQuestionSquareFill } from 'react-icons/bs';
+
+interface BackButtonProps {}
+
+export default function BackButton(props: BackButtonProps = {}) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const back = () => {
+    switch (pathname) {
+      case '/ai':
+      case '/level':
+        router.push('/levels');
+        break;
+      default:
+        router.push('/');
+        break;
+    }
+  };
+
+  const renderIcon = () => {
+    switch (pathname) {
+      case '/ai':
+      case '/level':
+        return <BiLeftArrowAlt />;
+      default:
+        return <BiHomeAlt />;
+    }
+  };
+
+  return pathname === '/' ? (
+    <Link
+      href='/rule'
+      aria-label='Link to rule page'
+      className='text-white dark:text-neon-red-light text-xl dark:text-sm lg:dark:text-2xl lg:text-3xl'
+    >
+      <div className='flex flex-row gap-2 items-center'>
+        <BsFillQuestionSquareFill data-testid='rule-icon' />
+        <span>Help</span>
+      </div>
+    </Link>
+  ) : (
+    <button
+      id='back'
+      data-style='none'
+      aria-label='back button'
+      className='text-2xl lg:text-4xl hover:cursor-pointer drop-shadow-lg dark:text-neon-blue'
+      onClick={() => {
+        back();
+      }}
+    >
+      {renderIcon()}
+    </button>
+  );
+}
